@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataSchemaModel FileFormatVersion="1.2" SchemaVersion="2.4" DspName="Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider" CollationLcid="2052" CollationCaseSensitive="False" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+	<Header>
+		<CustomData Category="AnsiNulls">
+			<Metadata Name="AnsiNulls" Value="True" />
+		</CustomData>
+		<CustomData Category="QuotedIdentifier">
+			<Metadata Name="QuotedIdentifier" Value="True" />
+		</CustomData>
+		<CustomData Category="CompatibilityMode">
+			<Metadata Name="CompatibilityMode" Value="120" />
+		</CustomData>
+		<CustomData Category="Reference" Type="Assembly">
+			<Metadata Name="LogicalName" Value="Test.dll" />
+			<Metadata Name="FileName" Value="D:\PRG\DATABASEPRG\DATABASE\TEST\OBJ\DEBUG\TEST.DLL" />
+			<Metadata Name="AssemblyName" Value="Test" />
+			<Metadata Name="PermissionSet" Value="SAFE" />
+			<Metadata Name="Owner" Value="" />
+			<Metadata Name="GenerateSqlClrDdl" Value="True" />
+			<Metadata Name="IsVisible" Value="True" />
+			<Metadata Name="IsModelAware" Value="True" />
+			<Metadata Name="SkipCreationIfEmpty" Value="True" />
+			<Metadata Name="AssemblySymbolsName" Value="D:\Prg\DatabasePrg\Database\Test\obj\Debug\Test.pdb" />
+		</CustomData>
+		<CustomData Category="SqlCmdVariables" Type="SqlCmdVariable">
+			<Metadata Name="SpecifiedLogPath" Value="" />
+		</CustomData>
+	</Header>
+	<Model>
+		<Element Type="SqlDatabaseOptions">
+			<Property Name="Collation" Value="Chinese_PRC_90_CI_AS" />
+			<Property Name="IsAnsiNullDefaultOn" Value="True" />
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Property Name="IsAnsiWarningsOn" Value="True" />
+			<Property Name="IsArithAbortOn" Value="True" />
+			<Property Name="IsConcatNullYieldsNullOn" Value="True" />
+			<Property Name="IsTornPageProtectionOn" Value="False" />
+			<Property Name="IsFullTextEnabled" Value="True" />
+			<Property Name="PageVerifyMode" Value="3" />
+			<Property Name="DefaultLanguage" Value="" />
+			<Property Name="DefaultFullTextLanguage" Value="" />
+			<Relationship Name="DefaultFilegroup">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[PRIMARY]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlProcedure" Name="[dbo].[BatchInsert]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+BEGIN
+	DECLARE @total BIGINT  = 1;
+	DECLARE @result INT  = 0;
+	DECLARE @index INT = 1;
+	IF(@flag = 0)
+	BEGIN
+		BEGIN TRY
+			BEGIN TRANSACTION
+			WHILE(@total <= 5000000)
+			BEGIN 
+				IF(@index = 5000)
+				BEGIN
+					COMMIT  TRANSACTION 
+					BEGIN TRANSACTION
+					INSERT INTO Inf_Test_PS VALUES(CONVERT(NVARCHAR(100),@total))
+					SET @index = 1;
+				END
+				ELSE 
+				BEGIN
+					INSERT INTO Inf_Test_PS VALUES(CONVERT(NVARCHAR(100),@total))
+					SET  @index = @index + 1;
+				END
+				SET  @total = @total + 1;
+			END 
+			COMMIT  TRANSACTION 
+		END TRY
+		BEGIN CATCH 
+			ROLLBACK  TRANSACTION 
+			SET  @result=-1;
+			GOTO  _result;
+		END CATCH
+	END    
+	_result:
+	SELECT  @result;
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[bigint]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[BatchInsert].[@flag]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[BatchInsert].[@flag]">
+						<Property Name="DefaultExpressionScript">
+							<Value><![CDATA[0]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bit]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="779" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [dbo].[BatchInsert]&#xD;&#xA;&#x9;@flag BIT  = 0&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[Inf_Db1]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Db1].[Id]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Db1].[Key]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Db1].[Name]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Db1].[Total]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Db1].[Desp]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="1024" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[PRIMARY]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="3" />
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[Inf_Test_PS]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Test_PS].[Id]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Test_PS].[Name]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="PartitionColumn">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS].[Id]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="PartitionScheme">
+				<Entry>
+					<References Name="[Ps_Test_Inf]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="4" />
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[Inf_Test_PS_History]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Test_PS_History].[Id]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Test_PS_History].[Name]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="PartitionColumn">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS_History].[Id]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="PartitionScheme">
+				<Entry>
+					<References Name="[Ps_Test_Inf]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="5" />
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[Inf_Test2]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Test2].[Id]">
+						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Test2].[Key]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="50" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Test2].[Name]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="100" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Test2].[Total]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[int]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Inf_Test2].[Desp]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Length" Value="1024" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References Name="[Test_FileGroup]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="6" />
+		</Element>
+		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Inf_Db1]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Inf_Db1].[Id]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Inf_Db1]" />
+				</Entry>
+			</Relationship>
+			<AttachedAnnotation Disambiguator="3" />
+		</Element>
+		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Inf_Test_PS]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Inf_Test_PS].[Id]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS]" />
+				</Entry>
+			</Relationship>
+			<AttachedAnnotation Disambiguator="4" />
+		</Element>
+		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Inf_Test_PS_History]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Inf_Test_PS_History].[Id]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS_History]" />
+				</Entry>
+			</Relationship>
+			<AttachedAnnotation Disambiguator="5" />
+		</Element>
+		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Inf_Test2]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Inf_Test2].[Id]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Inf_Test2]" />
+				</Entry>
+			</Relationship>
+			<AttachedAnnotation Disambiguator="6" />
+		</Element>
+		<Element Type="SqlDmlTrigger" Name="[dbo].[trg_Db1_SysDb2]">
+			<Property Name="IsInsertTrigger" Value="True" />
+			<Property Name="IsUpdateTrigger" Value="True" />
+			<Property Name="SqlTriggerType" Value="1" />
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+		declare @sql nvarchar(2048)
+		declare @table table([Id] bigint NOT NULL  IDENTITY, 
+							 [Key]  nvarchar(50) not null,
+							 [Name] NVARCHAR(100) NOT NULL, 
+							 [Total] int null,
+							 [Desp] NVARCHAR(1024) NULL)
+		declare @total int
+		declare @index int
+		declare @key nvarchar(50)
+		declare @name NVARCHAR(100)
+		declare @desp NVARCHAR(1024)
+		declare @totalCol int
+    BEGIN
+        SET NoCount ON
+		if exists(select * from inserted)
+		begin
+			insert into @table select [key],[Name],[Total],[Desp] from inserted
+			select @total=max(ID) from @table
+			while (@index <= @total)
+			begin
+				select @key=[Key],@name=[Name],@totalCol=[Total],@desp=[Desp] from @table where Id=@index
+				if exists(select [key] from [dbo].[Inf_Test2] where [Key]=@key)
+				begin
+					--执行update
+					update [dbo].[Inf_Test2] set [Name]=@name, [Total]=@totalCol,[Desp]=@desp where [Key]=@key
+					--动态sql执行
+					--set @sql='update [dbo].[Inf_Test2] set [Name]='+@name+', [Total]='+@totalCol+',[Desp]='+@desp+' where [Key]='+@key+''
+					--exec sp_executesql @sql  -- 有参数时exec sp_executesql @sql, N'@totalCol int out',@totalCol,如果为输入出参数省略out，多个参数分别用，号隔开
+				end
+				else
+				begin
+					--执行insert
+					insert into [dbo].[Inf_Test2]([Key],[Name],[Total],[Desp]) values(@key,@name,@totalCol,@desp)
+					--动态sql执行
+					--set @sql='insert into [Test].[dbo].[Inf_Test2]([Key],[Name],[Desp]) values(N'+@key+',N'+Replace(@name,'''','''''')+','+Convert(nvarchar(50),@totalCol)+',N'+Replace(@desp,'''','''''')+')'
+					--exec(@sql)
+				end
+			end
+		end
+		SET NoCount Off
+    END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[int]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Db1].[Key]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Db1].[Name]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Db1].[Total]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Db1].[Desp]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[trg_Db1_SysDb2].[@table].[Id]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[trg_Db1_SysDb2].[@table].[Key]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[trg_Db1_SysDb2].[@table].[Name]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[trg_Db1_SysDb2].[@table].[Total]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[trg_Db1_SysDb2].[@table].[Desp]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Test2]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Test2].[Key]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Test2].[Name]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Test2].[Total]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Test2].[Desp]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Inf_Test2].[Key]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DynamicObjects">
+				<Entry>
+					<Element Type="SqlDynamicColumnSource" Name="[dbo].[trg_Db1_SysDb2].[@table]">
+						<Relationship Name="Columns">
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[trg_Db1_SysDb2].[@table].[Id]">
+									<Property Name="IsNullable" Value="False" />
+									<Property Name="IsIdentity" Value="True" />
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[bigint]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[trg_Db1_SysDb2].[@table].[Key]">
+									<Property Name="IsNullable" Value="False" />
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Property Name="Length" Value="50" />
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[trg_Db1_SysDb2].[@table].[Name]">
+									<Property Name="IsNullable" Value="False" />
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Property Name="Length" Value="100" />
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[trg_Db1_SysDb2].[@table].[Total]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[int]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+							<Entry>
+								<Element Type="SqlSimpleColumn" Name="[dbo].[trg_Db1_SysDb2].[@table].[Desp]">
+									<Relationship Name="TypeSpecifier">
+										<Entry>
+											<Element Type="SqlTypeSpecifier">
+												<Property Name="Length" Value="1024" />
+												<Relationship Name="Type">
+													<Entry>
+														<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+													</Entry>
+												</Relationship>
+											</Element>
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parent">
+				<Entry>
+					<References Name="[dbo].[Inf_Db1]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Offset" Value="1020" />
+				<Property Name="CreateOffset" Value="2" />
+				<Property Name="Length" Value="1700" />
+				<Property Name="StartLine" Value="39" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="&#xD;&#xA;CREATE TRIGGER [dbo].[trg_Db1_SysDb2]&#xD;&#xA;    ON [dbo].[Inf_Db1]&#xD;&#xA;    FOR INSERT, UPDATE&#xD;&#xA;    AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlFilegroup" Name="[FG1]" />
+		<Element Type="SqlFile" Name="[FG1_File]">
+			<Property Name="FileName" Value="$(DefaultDataPath)$(DefaultFilePrefix)_FG1_File.ndf" />
+			<Property Name="Size" Value="10" />
+			<Property Name="MaxSizeUnit" Value="0" />
+			<Property Name="FileGrowth" Value="10" />
+			<Property Name="FileGrowthUnit" Value="1" />
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References Name="[FG1]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlFilegroup" Name="[FG2]" />
+		<Element Type="SqlFile" Name="[FG2_File]">
+			<Property Name="FileName" Value="$(DefaultDataPath)$(DefaultFilePrefix)_FG2_File.ndf" />
+			<Property Name="Size" Value="10" />
+			<Property Name="MaxSizeUnit" Value="0" />
+			<Property Name="FileGrowth" Value="10" />
+			<Property Name="FileGrowthUnit" Value="1" />
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References Name="[FG2]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlFilegroup" Name="[FG3]" />
+		<Element Type="SqlFile" Name="[FG3_File]">
+			<Property Name="FileName" Value="$(DefaultDataPath)$(DefaultFilePrefix)_FG3_File.ndf" />
+			<Property Name="Size" Value="10" />
+			<Property Name="MaxSizeUnit" Value="0" />
+			<Property Name="FileGrowth" Value="10" />
+			<Property Name="FileGrowthUnit" Value="1" />
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References Name="[FG3]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlPartitionFunction" Name="[Pf_Data]">
+			<Relationship Name="BoundaryValues">
+				<Entry>
+					<Element Type="SqlPartitionValue">
+						<Property Name="ExpressionScript">
+							<Value><![CDATA[10000]]></Value>
+						</Property>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlPartitionValue">
+						<Property Name="ExpressionScript">
+							<Value><![CDATA[20000]]></Value>
+						</Property>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlPartitionValue">
+						<Property Name="ExpressionScript">
+							<Value><![CDATA[30000]]></Value>
+						</Property>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="ParameterType">
+				<Entry>
+					<Element Type="SqlTypeSpecifier">
+						<Relationship Name="Type">
+							<Entry>
+								<References ExternalSource="BuiltIns" Name="[bigint]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlPartitionScheme" Name="[Ps_Test_Inf]">
+			<Relationship Name="Filegroups">
+				<Entry>
+					<Element Type="SqlFilegroupSpecifier">
+						<Relationship Name="Filegroup">
+							<Entry>
+								<References Name="[FG1]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlFilegroupSpecifier">
+						<Relationship Name="Filegroup">
+							<Entry>
+								<References Name="[FG2]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlFilegroupSpecifier">
+						<Relationship Name="Filegroup">
+							<Entry>
+								<References Name="[FG3]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlFilegroupSpecifier">
+						<Relationship Name="Filegroup">
+							<Entry>
+								<References Name="[FG3]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="PartitionFunction">
+				<Entry>
+					<References Name="[Pf_Data]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Db1].[Desp].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'描述']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Db1].[Desp]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Db1].[Key].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'关键字']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Db1].[Key]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Db1].[Name].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'名称']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Db1].[Name]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Db1].[Total].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'个数']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Db1].[Total]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Test_PS].[Id].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'主键']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS].[Id]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Test_PS].[Name].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'名称']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS].[Name]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Test_PS_History].[Id].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'主键']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS_History].[Id]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Test_PS_History].[Name].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'名称']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS_History].[Name]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Test2].[Desp].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'描述']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test2].[Desp]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Test2].[Key].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'关键字']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test2].[Key]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Test2].[Name].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'名称']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test2].[Name]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlColumn].[dbo].[Inf_Test2].[Total].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'个数']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test2].[Total]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlTableBase].[dbo].[Inf_Db1].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'测试表1']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Db1]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlTableBase].[dbo].[Inf_Test_PS].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'测试分区表']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlTableBase].[dbo].[Inf_Test_PS_History].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'测试分区表']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test_PS_History]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlExtendedProperty" Name="[SqlTableBase].[dbo].[Inf_Test2].[MS_Description]">
+			<Property Name="Value">
+				<Value><![CDATA[N'测试表2']]></Value>
+			</Property>
+			<Relationship Name="Host">
+				<Entry>
+					<References Name="[dbo].[Inf_Test2]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlFile" Name="[Test]">
+			<Property Name="FileName" Value="$(DefaultDataPath)$(DefaultFilePrefix).mdf" />
+			<Property Name="Size" Value="10" />
+			<Property Name="MaxSizeUnit" Value="0" />
+			<Property Name="FileGrowth" Value="1024" />
+			<Property Name="FileGrowthUnit" Value="3" />
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[PRIMARY]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlFilegroup" Name="[Test_FileGroup]" />
+		<Element Type="SqlFile" Name="[Test_FileGroup_File]">
+			<Property Name="FileName" Value="$(DefaultDataPath)$(DefaultFilePrefix)_Test_FileGroup_File.ndf" />
+			<Property Name="Size" Value="10" />
+			<Property Name="MaxSizeUnit" Value="0" />
+			<Property Name="FileGrowth" Value="10" />
+			<Property Name="FileGrowthUnit" Value="1" />
+			<Relationship Name="Filegroup">
+				<Entry>
+					<References Name="[Test_FileGroup]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlFile" Name="[Test_Log]">
+			<Property Name="FileName" Value="$(SpecifiedLogPath)$(DefaultFilePrefix)_Log.ldf" />
+			<Property Name="Size" Value="10" />
+			<Property Name="MaxSizeUnit" Value="0" />
+			<Property Name="FileGrowth" Value="10" />
+			<Property Name="FileGrowthUnit" Value="1" />
+			<Property Name="IsLogFile" Value="True" />
+		</Element>
+	</Model>
+</DataSchemaModel>

@@ -1,0 +1,35 @@
+﻿** 突出显示
+     将重新生成的表
+       无
+     将删除的聚集索引
+       无
+     将创建的聚集索引
+       无
+     可能的数据问题
+       无
+
+** 用户操作
+     创建
+       [Test_FileGroup] (文件组)
+       [Test_FileGroup_File] (文件)
+       [dbo].[Inf_Db1] (表)
+       [dbo].[Inf_Test2] (表)
+       [dbo].[trg_Db1_SysDb2] (触发器)
+       [dbo].[Inf_Db1].[MS_Description] (扩展属性)
+       [dbo].[Inf_Db1].[Key].[MS_Description] (扩展属性)
+       [dbo].[Inf_Db1].[Name].[MS_Description] (扩展属性)
+       [dbo].[Inf_Db1].[Total].[MS_Description] (扩展属性)
+       [dbo].[Inf_Db1].[Desp].[MS_Description] (扩展属性)
+       [dbo].[Inf_Test2].[MS_Description] (扩展属性)
+       [dbo].[Inf_Test2].[Key].[MS_Description] (扩展属性)
+       [dbo].[Inf_Test2].[Name].[MS_Description] (扩展属性)
+       [dbo].[Inf_Test2].[Total].[MS_Description] (扩展属性)
+       [dbo].[Inf_Test2].[Desp].[MS_Description] (扩展属性)
+
+** 支持操作
+
+源的对象 [Test] 不同于目标的对象版本，但不会更新目标对象。
+源的对象 [Test_Log] 不同于目标的对象版本，但不会更新目标对象。
+对象 [Test] 已经存在于数据库中且具有不同定义，将不改变。
+对象 [Test_Log] 已经存在于数据库中且具有不同定义，将不改变。
+

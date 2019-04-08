@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="db86987f-2cfa-4470-a582-902a026a66cf" ChangeDateTime="09/24/2017 07:48:05">
+    <Property Name="ElementName" Value="[dbo].[Trigger_Db1_]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[Inf_Db1]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[trg_Db1_]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="42daebd1-8aec-40be-8321-6dbaee6578eb" ChangeDateTime="09/24/2017 07:48:30">
+    <Property Name="ElementName" Value="[dbo].[trg_Db1_]" />
+    <Property Name="ElementType" Value="SqlDmlTrigger" />
+    <Property Name="ParentElementName" Value="[dbo].[Inf_Db1]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[trg_Db1_SysDb2]" />
+  </Operation>
+</Operations>
